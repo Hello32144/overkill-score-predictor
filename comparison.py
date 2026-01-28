@@ -5,8 +5,8 @@ import matplotlib.pyplot as plt
 from sklearn.preprocessing import StandardScaler
 import joblib
 
-model = "frc_scoring_predictions.keras"
-scaler = 'frc_scaler.pkl'
+model = tf.keras.models.load_model("frc_scoring_predictions.keras")
+scaler = joblib.load('frc_scaler.pkl')
 
 def get_team_data(team_id, data):
     team_matches = data['root'].get(str(team_id))

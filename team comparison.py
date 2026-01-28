@@ -44,16 +44,16 @@ def prepare_data(data_path):
 model = tf.keras.Sequential([
     layers.Input(shape=(7,)),
     tf.keras.layers.Dense(128, activation='relu'),
-    tf.keras.dropout(0.2),
+    tf.keras.layers.Dropout(0.2),
     tf.keras.layers.Dense(64, activation='relu'),
     tf.keras.layers.Dense(1)
 ])
 model.compile(
-    optimizer=tf.keras.optimizers.Adam(learning_rate=0.001),
+    optimizer=tf.keras.optimizers.Adam(learning_rate=0.0001),
     loss='mse',
     metrics=['mae']
 )
-x, y, raw_json = prepare_data("m.json")
+x, y = prepare_data("m.json")
 scaler = StandardScaler()
 x_train, x_temp, y_train, y_temp = train_test_split(x, y, test_size=0.2, random_state=0)
 x_valid, x_test, y_valid, y_test = train_test_split(x_temp, y_temp, test_size=0.5, random_state=0)
@@ -66,12 +66,10 @@ graph = model.fit(
     x_train_scaled, 
     y_train,
     batch_size=16,
-    epochs=300,
+    epochs=1000,
     verbose=1,
     validation_data=(x_valid_scaled, y_valid)
 )
-#comparing to simulation
-
 
 
 def plot(graph):
