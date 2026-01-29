@@ -4,12 +4,16 @@ import tensorflow as tf
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import StandardScaler
 import joblib
+import os
+DIR = os.path.dirname(os.path.abspath("model.gitattributes"))
 
-model = tf.keras.models.load_model("frc_scoring_predictions.keras")
-scaler = joblib.load('frc_scaler.pkl')
+model = tf.keras.models.load_model(os.path.join(DIR,"frc_scoring_predictions.keras"))
+scaler = joblib.load(os.path.join(DIR,'frc_scaler.pkl'))
 
 def get_team_data(team_id, data):
-    team_matches = data['root'].get(str(team_id))
+    with open(data, "r") as f:
+        m_data = json.load(f)
+    team_matches = m_data['root'].get(str(team_id))
     match_list = []
     for m_id, m_data in team_matches.items():
         match_list.append([
